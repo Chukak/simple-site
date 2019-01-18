@@ -15,10 +15,8 @@ namespace mysite
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddRazorPagesOptions(options => 
-            {
-                options.RootDirectory = "pages";
-            });
+            services.AddMvc();
+            services.AddRouting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,7 +26,13 @@ namespace mysite
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "home",
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                );
+            });
             app.UseStaticFiles();
         }
     }

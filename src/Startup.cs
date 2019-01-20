@@ -29,7 +29,7 @@ namespace mysite
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "home",
+                    name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}"
                 );
             });

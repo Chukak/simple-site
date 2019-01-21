@@ -4,11 +4,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using testsite.Infactructure;
 
 namespace mysite.controllers
 {
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signinManager;
+
+        public AccountController(
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
+        {
+            _userManager = userManager;
+            _signinManager = signInManager;
+        }
         // GET
         [HttpGet]
         [AllowAnonymous]
@@ -29,7 +41,7 @@ namespace mysite.controllers
         [HttpPost]
         public async Task<IActionResult> SignOut()
         {
-            // todo
+            await _signinManager.SignOutAsync();
             return RedirectToPage("/");
         }
         

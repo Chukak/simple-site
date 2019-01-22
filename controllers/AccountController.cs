@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using testsite.Infactructure;
 
-namespace mysite.controllers
+namespace testsite.controllers
 {
     [Route("[controller]/[action]")]
     public class AccountController : Controller

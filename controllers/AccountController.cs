@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using testsite.Infactructure;
+using testsite.models.views.account;
 
 namespace testsite.controllers
 {
@@ -48,17 +49,35 @@ namespace testsite.controllers
         // GET
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult SignUp()
+        public IActionResult Register()
         {
             return View();
         }
 
         // POST
-        /*[HttpPost]
+        [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignUp()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            return View();
-        }*/
+            if (ModelState.IsValid) {
+                AppUser user = new AppUser{ UserName = model.Username, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (!result.Succeeded) {
+                    AppendErrors(ref result);
+                    return View(model);
+                }
+                await _signinManager.SignInAsync(user, false);
+                return RedirectToPage("/");
+            }
+            return View(model);
+        }
+
+        private void AppendErrors(ref IdentityResult result)
+        {
+            foreach(var err in result.Errors) {
+                ModelState.AddModelError("SignUp", err.Description);
+            }
+        }
     }
 }

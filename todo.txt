@@ -1,0 +1,1 @@
+Normal db server (mysql, postgres). Check the appsettings.json file.

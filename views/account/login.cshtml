@@ -1,0 +1,43 @@
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+<div>
+    <ul>
+        <!-- todo -->
+    </ul>
+</div>
+<div>
+    <div>
+        <section>
+            <form asp-controller="Account" method="post" role="form">
+                <div asp-validation-summary="All"></div>
+                <div>
+                    <label asp-for="Username"></label>
+                    <div>
+                        <input asp-for="Username" />
+                        <span asp-validation-for="Username"></span>
+                    </div>
+                </div>
+                <div>
+                    <label asp-for="Password"></label>
+                    <div>
+                        <input asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="checkbox">
+                        <label asp-for="Remember">
+                            <input asp-for="Remember" />
+                            @Html.DisplayNameFor(m => m.Remember)
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit">Sign In</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

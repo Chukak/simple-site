@@ -27,16 +27,27 @@ namespace testsite.controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn()
         {
-                return View();
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            return View();
         }
 
         // POST
-        /*[HttpPost]
+        [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn()
+        public async Task<IActionResult> SignIn(LoginModel model)
         {
-            return View();
-        }*/
+            if (ModelState.IsValid) {
+                var result = await _signinManager.PasswordSignInAsync(
+                    model.Username, model.Password, 
+                    model.Remember, lockoutOnFailure: false);
+                    if (!result.Succeeded) {
+                        ModelState.AddModelError(string.Empty, "Invalid login or password.");
+                        return View(model);
+                    }
+                    return RedirectToPage("/");
+            }
+            return View(model);
+        }
 
         // GET
         [HttpPost]
@@ -76,7 +87,7 @@ namespace testsite.controllers
         private void AppendErrors(ref IdentityResult result)
         {
             foreach(var err in result.Errors) {
-                ModelState.AddModelError("SignUp", err.Description);
+                ModelState.AddModelError("", err.Description);
             }
         }
     }

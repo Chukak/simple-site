@@ -25,7 +25,7 @@ namespace testsite.controllers
         // GET
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn()
+        public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             return View();
@@ -34,7 +34,7 @@ namespace testsite.controllers
         // POST
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid) {
                 var result = await _signinManager.PasswordSignInAsync(
@@ -51,7 +51,7 @@ namespace testsite.controllers
 
         // GET
         [HttpPost]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> Logout()
         {
             await _signinManager.SignOutAsync();
             return RedirectToPage("/");

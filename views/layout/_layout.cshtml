@@ -10,8 +10,11 @@
         <header class="navbar navbar-static-top">
             <div class="container">
                 <article class="row">
-                    <a asp-page="/" class="navbar-brand">HOME</a>
+                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">HOME</a>
                 </article>
+                <div>
+                    @Html.Partial("~/views/account/_LoginPartial.cshtml")
+                </div>
             </div>
         </header>
         @RenderBody()

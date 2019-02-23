@@ -44,7 +44,7 @@ namespace testsite.controllers
                         ModelState.AddModelError(string.Empty, "Invalid login or password.");
                         return View(model);
                     }
-                    return RedirectToPage("/");
+                    return RedirectToAction("Index", "Home");
             }
             return View(model);
         }
@@ -54,7 +54,7 @@ namespace testsite.controllers
         public async Task<IActionResult> Logout()
         {
             await _signinManager.SignOutAsync();
-            return RedirectToPage("/");
+            return RedirectToAction("Index", "Home");
         }
         
         // GET
@@ -65,21 +65,24 @@ namespace testsite.controllers
             return View();
         }
 
-        // POST
+        // POST 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid) {
-                AppUser user = new AppUser{ UserName = model.Username, Email = model.Email };
+                AppUser user = new AppUser
+                { 
+                    UserName = model.Username, Email = model.Email 
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (!result.Succeeded) {
                     AppendErrors(ref result);
                     return View(model);
                 }
-                await _signinManager.SignInAsync(user, false);
-                return RedirectToPage("/");
+                await _signinManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }

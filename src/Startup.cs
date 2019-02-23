@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using testsite.Infactructure;
 using testsite.Data.User;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace testsite
 {
@@ -27,10 +28,17 @@ namespace testsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppUserDbContext>(options =>
-                options.UseSqlServer(_conf.GetConnectionString("UserConnection"))
+                options.UseNpgsql(_conf.GetConnectionString("UserConnection"))
             );
 
-            services.AddIdentity<AppUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
             .AddEntityFrameworkStores<AppUserDbContext>()
             .AddDefaultTokenProviders();
 
@@ -45,6 +53,12 @@ namespace testsite
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -52,8 +66,6 @@ namespace testsite
                     template: "{controller=Home}/{action=Index}/{id?}"
                 );
             });
-            app.UseStaticFiles();
-            app.UseAuthentication();
         }
     }
 }

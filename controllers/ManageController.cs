@@ -65,23 +65,30 @@ namespace testsite.controllers
         }
 
         // GET
+        [HttpGet]
         public async Task<IActionResult> ChangeUsername()
         {
             AppUser user = await GetUserAsync();
             var model = new ChangeUsernameModel
             {
-                CurrentUsername = user.UserName
+                CurrentUsername = user.UserName,
+                NewUsername = user.UserName
             };
-            // todo
             return View(model);
         }
 
         // POST
+        [HttpPost]
         public async Task<IActionResult> ChangeUsername(ChangeUsernameModel model)
         {
             if (ModelState.IsValid) {
                 AppUser user = await GetUserAsync();
-                user.UserName = model.NewUsername;
+                user.UserName = string.IsNullOrEmpty(model.NewUsername) || string.IsNullOrWhiteSpace(model.NewUsername) 
+                            ? user.Email : model.NewUsername;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded) {
+                    throw new ApplicationException($"Can not update user. User id: '{_userManager.GetUserId(User)}'");
+                }
                 return RedirectToAction("Account", "Manage");
             }
             return View(model);

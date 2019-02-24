@@ -40,7 +40,7 @@ namespace testsite.controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            if (await _userManager.HasPasswordAsync(GetUserAsync().Result)) {
+            if (!await _userManager.HasPasswordAsync(GetUserAsync().Result)) {
                 // todo
             }
             var model = new ChangePasswordModel{};
@@ -59,7 +59,7 @@ namespace testsite.controllers
                     return View(model);
                 }
                 await _signinManager.SignInAsync(user, false);
-                RedirectToAction(nameof(Account));
+                return RedirectToAction("Account", "Manage");
             }
             return View(model);
         }
@@ -82,7 +82,7 @@ namespace testsite.controllers
             if (ModelState.IsValid) {
                 AppUser user = await GetUserAsync();
                 user.UserName = model.NewUsername;
-                RedirectToAction(nameof(Account));
+                return RedirectToAction("Account", "Manage");
             }
             return View(model);
         }

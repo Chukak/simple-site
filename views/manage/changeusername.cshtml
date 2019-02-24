@@ -1,0 +1,34 @@
+@model ChangeUsernameModel
+@{
+    ViewData["Title"] = "Change username";
+}
+<div>
+    <ul>
+        <!-- todo -->
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+        <section>
+            <form class="form-horizontal" asp-controller="Manage" asp-action="ChangeUsername" method="post" role="form">
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <div class="form-group">
+                    <label class="control-label form-label" asp-for="CurrentUsername"></label>
+                    <div>
+                        <input class="form-control form-input" asp-for="CurrentUsername" readonly />
+                        <span class="text-danger" asp-validation-for="CurrentUsername"></span>
+                    </div>
+                </div>
+                <div class="form-group pos-relative">
+                    <label class="control-label form-label" asp-for="NewUsername"></label>
+                    <input id="NewUsernameInput" class="form-control form-input" asp-for="NewUsername" />
+                    <span class="form-clear-icon d-none"><i class="material-icons material-clear-icon">clear</i></span>
+                    <span class="text-danger" asp-validation-for="NewUsername"></span>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-success" type="submit">Change</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

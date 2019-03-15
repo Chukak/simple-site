@@ -1,5 +1,7 @@
 # testsite
 
+Simple site on `C#` and `ASP.NET Core` with registration and user account.
+
 To install dotnet in Linux (Ubuntu 18.04)
 ```bash
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
